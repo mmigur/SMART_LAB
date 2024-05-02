@@ -1,4 +1,4 @@
-package com.example.smart_lab.on_board
+package com.example.smart_lab.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
-import com.example.smart_lab.Screen
-import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.example.smart_lab.storage.OnBoardingPage
+import com.example.smart_lab.storage.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -67,7 +66,7 @@ fun CustomIndicator(isSelected: Boolean){
         modifier = Modifier
             .padding(2.dp)
             .background(
-                color = if(isSelected) Color.Blue else Color.LightGray,
+                color = if(isSelected) Color(0xFF57A9FF) else Color.LightGray,
                 shape = CircleShape).size(15.dp),
     )
 }
@@ -92,10 +91,10 @@ fun PagerScreen(
         ){
             Text(
                 modifier = Modifier.clickable {
-                  navController.navigate(route = Screen.Home.route)
+                  navController.navigate(route = Screen.SignIn.route)
                 },
                 text = OnBoardingPage.buttonText,
-                color = Color.Blue,
+                color = Color(0xFF57A9FF),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -117,7 +116,7 @@ fun PagerScreen(
         ) {
             Text(
                 text = OnBoardingPage.title,
-                color = Color.Green,
+                color = Color(0xFF00B712),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )

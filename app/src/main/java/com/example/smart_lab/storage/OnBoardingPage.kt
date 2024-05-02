@@ -1,4 +1,4 @@
-package com.example.smart_lab.on_board
+package com.example.smart_lab.storage
 
 import androidx.annotation.DrawableRes
 import com.example.smart_lab.R
