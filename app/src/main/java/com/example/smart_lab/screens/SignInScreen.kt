@@ -108,8 +108,8 @@ fun SignInScreen(navController: NavController){
             onClick = {
                 navController.navigate(route = Screen.EmailCodeScreen.route)
             },
-            // isEmailValid
-            enabled = true,
+            // true
+            enabled = isEmailValid,
             shape = RoundedCornerShape(10.dp),
         ) {
             Text(

@@ -1,5 +1,7 @@
 package com.example.smart_lab.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +28,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
+import com.example.smart_lab.storage.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,7 +74,7 @@ private val textList = listOf(
             text = "",
             selection = TextRange.Zero
         )
-    ),mutableStateOf(
+    ), mutableStateOf(
         TextFieldValue(
             text = "",
             selection = TextRange.Zero
@@ -90,8 +94,9 @@ private val requesterList = listOf(
     FocusRequester(),
     FocusRequester()
 )
+
 @Composable
-fun EmailCodeScreen(navController: NavController){
+fun EmailCodeScreen(navController: NavController) {
     val focusManager = LocalFocusManager.current
     val keyBoardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -99,19 +104,19 @@ fun EmailCodeScreen(navController: NavController){
     var isButtonEnabled by remember { mutableStateOf(true) }
     var countdown by remember { mutableStateOf(60) }
     val coroutineScope = rememberCoroutineScope()
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 24.dp)
-    ){
+    ) {
         FilledIconButton(
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(start = 24.dp),
             onClick = {
-                navController.navigateUp()
+                navController.navigate(route = Screen.SignIn.route)
             },
-            colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color.LightGray),
+            colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFFE2E2E2)),
             shape = RoundedCornerShape(12.dp)
         ) {
             Icon(
@@ -126,25 +131,72 @@ fun EmailCodeScreen(navController: NavController){
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
         )
-
+        Spacer(modifier = Modifier.height(24.dp))
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ){
-            for (i in textList.indices){
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            for (i in textList.indices) {
                 InputView(
                     value = textList[i].value,
-                    onValueChange = {newValue ->
+                    onValueChange = { newValue ->
+                        if (textList[i].value.text != "") {
+                            if (newValue.text == "") {
+                                textList[i].value = TextFieldValue(
+                                    text = "",
+                                    selection = TextRange.Zero
+                                )
+                            }
+                            return@InputView
+                        }
 
+                        textList[i].value = TextFieldValue(
+                            text = newValue.text,
+                            selection = TextRange(newValue.text.length)
+                        )
+
+                        connectInputtedCode(textList) {
+                            focusManager.clearFocus()
+                            keyBoardController?.hide()
+
+                            if (it) {
+                                Log.e("TAGGG", "dawda")
+                                Toast.makeText(
+                                    context,
+                                    "Успешно",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Ошибка",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                for (text in textList) {
+                                    text.value = TextFieldValue(
+                                        text = "",
+                                        selection = TextRange.Zero
+                                    )
+                                }
+                            }
+                        }
+
+                        nextFocus(
+                            textList = textList,
+                            requesterList = requesterList,
+                        )
                     },
                     focusRequester = requesterList[i]
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = "Отправить код повторно можно будет через $countdown секунд",
+            color = Color(0xFF939396)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -180,12 +232,59 @@ fun EmailCodeScreen(navController: NavController){
     })
 }
 
+public fun connectInputtedCode(
+    textList: List<MutableState<TextFieldValue>>,
+    onVerifyCode: ((success: Boolean) -> Unit)? = null
+) {
+    fun verifyCode(
+        code: String,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
+    ) {
+        if (code == CODE) {
+            onSuccess()
+        } else {
+            onError()
+        }
+    }
+
+    var code = ""
+    for (text in textList) {
+        code += text.value.text
+    }
+    if (code.length == 4) {
+        verifyCode(code, onSuccess = {
+            onVerifyCode?.let {
+                it(true)
+            }
+        }, onError = {
+            onVerifyCode?.let {
+                it(false)
+            }
+        })
+    }
+}
+
+private fun nextFocus(
+    textList: List<MutableState<TextFieldValue>>,
+    requesterList: List<FocusRequester>
+) {
+    for (index in textList.indices) {
+        if (textList[index].value.text == "") {
+            if (index < textList.size) {
+                requesterList[index].requestFocus()
+                break
+            }
+        }
+    }
+}
+
 @Composable
 fun InputView(
     value: TextFieldValue,
     onValueChange: (value: TextFieldValue) -> Unit,
     focusRequester: FocusRequester
-){
+) {
     BasicTextField(
         readOnly = false,
         value = value,
@@ -193,7 +292,7 @@ fun InputView(
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.Gray)
+            .background(Color(0xFFE2E2E2))
             .wrapContentSize()
             .focusRequester(focusRequester),
         maxLines = 1,
@@ -203,15 +302,14 @@ fun InputView(
                     .width(50.dp)
                     .height(50.dp),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 innerTextField()
             }
         },
-        cursorBrush = SolidColor(Color.White),
+        cursorBrush = SolidColor(Color.Gray),
         textStyle = TextStyle(
-            color = Color.White,
+            color = Color.Black,
             fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         ),
         keyboardOptions = KeyboardOptions(
