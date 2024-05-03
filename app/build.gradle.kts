@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -77,4 +78,8 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-pager:0.34.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
+    implementation("com.airbnb.android:lottie:3.7.0")
+
+    implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")
+
 }

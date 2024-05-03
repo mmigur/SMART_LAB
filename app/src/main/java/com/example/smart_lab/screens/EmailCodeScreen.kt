@@ -161,12 +161,12 @@ fun EmailCodeScreen(navController: NavController) {
                             keyBoardController?.hide()
 
                             if (it) {
-                                Log.e("TAGGG", "dawda")
                                 Toast.makeText(
                                     context,
                                     "Успешно",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
                             } else {
                                 Toast.makeText(
                                     context,
@@ -210,6 +210,7 @@ fun EmailCodeScreen(navController: NavController) {
                 if (isButtonEnabled) {
                     isButtonEnabled = false
                     coroutineScope.launch {
+                        navController.navigate(Screen.PinCode.route)
                         while (countdown > 0) {
                             delay(1000)
                             countdown--
