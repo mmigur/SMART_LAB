@@ -54,7 +54,9 @@ fun PinCodeScreen(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(top = 40.dp, end = 24.dp)
-                .clickable { },
+                .clickable {
+                   navController.navigate(Screen.MapUser.route)
+                },
             text = "Пропустить",
             color = Color(0xFF57A9FF),
             fontSize = 20.sp,

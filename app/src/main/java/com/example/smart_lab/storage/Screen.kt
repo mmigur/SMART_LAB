@@ -6,4 +6,5 @@ sealed class Screen(val route: String) {
     object OnBoard: Screen(route = "on_board_screen")
     object EmailCodeScreen: Screen(route = "email_code_screen")
     object PinCode: Screen(route = "pin_code_screen")
+    object MapUser: Screen(route = "map_user_screen")
 }

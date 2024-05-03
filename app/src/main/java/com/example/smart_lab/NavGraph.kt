@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.smart_lab.screens.OnBoarding
 import com.example.smart_lab.screens.EmailCodeScreen
+import com.example.smart_lab.screens.MapUserScreen
 import com.example.smart_lab.screens.PinCodeScreen
 import com.example.smart_lab.screens.SignInScreen
 import com.example.smart_lab.screens.SplashScreen
@@ -17,7 +18,7 @@ fun SetupNavGraph(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.MapUser.route
     ){
         composable(
             route = Screen.Splash.route
@@ -47,6 +48,12 @@ fun SetupNavGraph(
             route = Screen.PinCode.route
         ){
             PinCodeScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.MapUser.route
+        ){
+            MapUserScreen(navController = navController)
         }
     }
 }
