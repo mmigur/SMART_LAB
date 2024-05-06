@@ -98,7 +98,7 @@ fun MapUserScreen(
             Text(
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(Screen.MapUser.route)
+                        navController.navigate(Screen.Home.route)
                     },
                 text = "Пропустить",
                 color = Color(0xFF57A9FF),
@@ -223,7 +223,7 @@ fun MapUserScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = { /* Действие при нажатии на кнопку */ },
+            onClick = { navController.navigate(route = Screen.Home.route) },
             enabled = buttonEnabled,
             colors = ButtonDefaults.buttonColors(
                 containerColor = buttonColor

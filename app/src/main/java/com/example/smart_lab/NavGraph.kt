@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.smart_lab.screens.OnBoarding
 import com.example.smart_lab.screens.EmailCodeScreen
+import com.example.smart_lab.screens.HomeScreen
 import com.example.smart_lab.screens.MapUserScreen
 import com.example.smart_lab.screens.PinCodeScreen
 import com.example.smart_lab.screens.SignInScreen
@@ -54,6 +55,12 @@ fun SetupNavGraph(
             route = Screen.MapUser.route
         ){
             MapUserScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.Home.route
+        ){
+            HomeScreen(navController = navController)
         }
     }
 }
