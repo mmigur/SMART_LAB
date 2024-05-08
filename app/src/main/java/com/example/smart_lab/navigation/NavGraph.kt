@@ -1,17 +1,16 @@
-package com.example.smart_lab
+package com.example.smart_lab.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.smart_lab.screens.OnBoarding
-import com.example.smart_lab.screens.EmailCodeScreen
-import com.example.smart_lab.screens.HomeScreen
-import com.example.smart_lab.screens.MapUserScreen
-import com.example.smart_lab.screens.PinCodeScreen
-import com.example.smart_lab.screens.SignInScreen
+import com.example.smart_lab.auth.EmailCodeScreen
+import com.example.smart_lab.home.HomeScreen
+import com.example.smart_lab.auth.MapUserScreen
+import com.example.smart_lab.auth.PinCodeScreen
+import com.example.smart_lab.auth.SignInScreen
 import com.example.smart_lab.screens.SplashScreen
-import com.example.smart_lab.storage.Screen
 
 @Composable
 fun SetupNavGraph(
@@ -19,7 +18,7 @@ fun SetupNavGraph(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.MapUser.route
+        startDestination = Screen.Home.route
     ){
         composable(
             route = Screen.Splash.route

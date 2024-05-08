@@ -1,4 +1,4 @@
-package com.example.smart_lab.storage
+package com.example.smart_lab.navigation
 
 sealed class Screen(val route: String) {
     object Splash: Screen(route = "splash_screen")
@@ -8,4 +8,5 @@ sealed class Screen(val route: String) {
     object PinCode: Screen(route = "pin_code_screen")
     object MapUser: Screen(route = "map_user_screen")
     object Home: Screen(route = "home_screen")
+    object Analyzes: Screen(route = "analyzes_screen")
 }

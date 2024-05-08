@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">smart_lab</string>
+    <string name="analysis">smart_lab</string>
+    <string name="results">smart_lab</string>
+    <string name="support">smart_lab</string>
+    <string name="profile">smart_lab</string>
 </resources>

@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.smart_lab.R
-import com.example.smart_lab.storage.Screen
+import com.example.smart_lab.navigation.Screen
 import kotlinx.coroutines.delay
 
 

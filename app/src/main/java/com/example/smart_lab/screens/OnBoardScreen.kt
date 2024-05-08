@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
 import com.example.smart_lab.storage.OnBoardingPage
-import com.example.smart_lab.storage.Screen
+import com.example.smart_lab.navigation.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

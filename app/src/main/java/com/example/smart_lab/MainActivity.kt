@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.smart_lab.navigation.SetupNavGraph
 
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
