@@ -64,6 +64,7 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("androidx.benchmark:benchmark-macro:1.2.4")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -81,5 +82,10 @@ dependencies {
     implementation("com.airbnb.android:lottie:3.7.0")
 
     implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.models
+package com.example.smart_lab.models
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf

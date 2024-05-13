@@ -1,4 +1,4 @@
-package com.example.models
+package com.example.smart_lab.models
 
 data class AnalyzeCardModel (
     val title: String,

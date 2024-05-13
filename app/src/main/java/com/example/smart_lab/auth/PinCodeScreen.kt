@@ -1,10 +1,15 @@
 package com.example.smart_lab.auth
 
+import android.content.Context
+import android.content.SharedPreferences
+
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,8 +38,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavController
 import com.example.smart_lab.navigation.Screen
+import java.util.prefs.Preferences
 
 @Composable
 fun PinCodeScreen(
@@ -44,6 +52,7 @@ fun PinCodeScreen(
         mutableStateListOf<Int>(
         )
     }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -109,9 +118,7 @@ fun PinCodeScreen(
 
         if (pin.size == 4) {
             if (pin.joinToString("") == "1234") {
-                Toast.makeText(
-                    LocalContext.current, "Успешно", Toast.LENGTH_SHORT
-                ).show()
+
             } else {
                 Toast.makeText(
                     LocalContext.current, "Не успешно", Toast.LENGTH_SHORT
@@ -150,6 +157,7 @@ private fun PinIndicator(
             .border(1.dp, Color(0xFF1A6FEE), CircleShape)
     )
 }
+
 
 @Composable
 private fun NumberButton(

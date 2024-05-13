@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -32,11 +33,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
+import com.example.smart_lab.backend.SharedLib
+import com.example.smart_lab.backend.isUserRegistered
 import com.example.smart_lab.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(navController: NavController){
+    val context = LocalContext.current
+    val sharedLib = remember {
+        SharedLib(context)
+    }
     var enterUserOrEmailText by remember { mutableStateOf(TextFieldValue("")) }
     var isEmailValid by remember { mutableStateOf(false) }
     Column(
@@ -106,7 +113,18 @@ fun SignInScreen(navController: NavController){
                 .width(335.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF1A6FEE)),
             onClick = {
-                navController.navigate(route = Screen.EmailCodeScreen.route)
+                sharedLib.writeToSharedPreferences(
+                    key = "email_sign_in",
+                    value = enterUserOrEmailText.toString()
+                )
+                if (
+                    isUserRegistered(email = enterUserOrEmailText.toString())
+                ){
+                    navController.navigate(route = Screen.Home.route)
+                }
+                else{
+                    navController.navigate(route = Screen.PinCode.route)
+                }
             },
             // true
             enabled = isEmailValid,

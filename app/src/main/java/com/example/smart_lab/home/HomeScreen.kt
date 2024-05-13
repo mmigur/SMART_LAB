@@ -1,17 +1,11 @@
 package com.example.smart_lab.home
 
 import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,58 +18,40 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FilterChip
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.models.AnalyzeCardModel
-import com.example.models.FilterButtonModel
-import com.example.models.NewsCardModel
-import com.example.models.filterButtonTextList
+import com.example.smart_lab.models.AnalyzeCardModel
+import com.example.smart_lab.models.FilterButtonModel
+import com.example.smart_lab.models.NewsCardModel
+import com.example.smart_lab.models.filterButtonTextList
 import com.example.smart_lab.R
-import com.example.smart_lab.navigation.SetupNavGraph
-import kotlin.math.ln
+import com.example.smart_lab.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -115,16 +91,33 @@ fun HomeScreen(
             price = 1800
         )
     )
-
+    var firstName by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
     ) {
+        OutlinedTextField(
+            value = firstName,
+            onValueChange = { firstName = it },
+            placeholder = {
+                Text(
+                    text = "Имя",
+                    color = Color.LightGray
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .padding(start = 24.dp, end = 24.dp),
+            singleLine = true,
+            shape = RoundedCornerShape(10.dp)
+        )
+
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 100.dp, start = 24.dp),
+                .padding(start = 24.dp),
             horizontalArrangement = Arrangement.Start
         ){
             Text(
@@ -170,7 +163,7 @@ fun HomeScreen(
                     },
                     modifier = Modifier.height(50.dp),
                     shape = RoundedCornerShape(10.dp),
-                    colors = ChipDefaults.filterChipColors(Color(0xFF1A6FEE), Color(0xFF1A6FEE))
+                    colors = ChipDefaults.filterChipColors(Color(0xFF1A6FEE), Color(0xFFD3D3D3))
                 )
             }
         }
@@ -201,6 +194,32 @@ fun HomeScreen(
                 )
             }
         }
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(105.dp).background(color = Color.Black)
+        ){
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.dp)
+                    .padding(horizontal = 20.dp),
+                shape = RoundedCornerShape(10.dp),
+
+            ) {
+
+            }
+        }
+    }
+}
+
+@Composable
+fun PriceComponent(price: Int): Unit? {
+    return if (price > 0) {
+
+    } else {
+        null
     }
 }
 
@@ -248,7 +267,7 @@ fun AnalyzeCard(
                 modifier = Modifier
                     .height(40.dp)
                     .align(Alignment.Bottom),
-                onClick = { /*TODO*/ },
+                onClick = {  },
                 shape = RoundedCornerShape(10.dp),
             ) {
                 Text(
