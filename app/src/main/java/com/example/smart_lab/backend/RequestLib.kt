@@ -1,29 +1,29 @@
 package com.example.smart_lab.backend
 
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONObject
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 
-fun isUserRegistered(email: String): Boolean {
-    val url = "https://b95d-2a03-d000-6583-1ba0-48f1-c600-58b8-2a33.ngrok-free.app/auth/check-user"
-    val client = OkHttpClient()
+@Composable
+fun userEmail(email: String): Boolean {
+    val authRepository = createAuthRepository()
+    val coroutineScope = rememberCoroutineScope()
+    var isRegistered by remember { mutableStateOf<Boolean?>(null) }
 
-    val requestBody = """{"email": "$email"}""".trimIndent()
-    val request = Request.Builder()
-        .url("$url?$requestBody")
-        .build()
-
-    return try {
-        val response = client.newCall(request).execute()
-        val responseBody = response.body?.string()
-        if (responseBody != null) {
-            val jsonObject = JSONObject(responseBody)
-            val isRegistered = jsonObject.getBoolean("isRegistered")
-            isRegistered
-        } else {
-            false
+    LaunchedEffect(email) {
+        coroutineScope.launch {
+            try {
+                val response = authRepository.checkUser(email)
+                isRegistered = response
+            } catch (e: Exception) {
+                isRegistered = false // Если произошла ошибка, считаем, что пользователь не зарегистрирован
+            }
         }
-    } catch (e: Exception) {
-        false
     }
+    return isRegistered ?: false
 }

@@ -18,9 +18,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
 import com.example.smart_lab.backend.SharedLib
-import com.example.smart_lab.backend.isUserRegistered
+import com.example.smart_lab.backend.createAuthRepository
+import com.example.smart_lab.backend.userEmail
 import com.example.smart_lab.navigation.Screen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,6 +50,11 @@ fun SignInScreen(navController: NavController){
     }
     var enterUserOrEmailText by remember { mutableStateOf(TextFieldValue("")) }
     var isEmailValid by remember { mutableStateOf(false) }
+
+    val authRepository = createAuthRepository()
+    val isRegistered = remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -113,18 +122,8 @@ fun SignInScreen(navController: NavController){
                 .width(335.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF1A6FEE)),
             onClick = {
-                sharedLib.writeToSharedPreferences(
-                    key = "email_sign_in",
-                    value = enterUserOrEmailText.toString()
-                )
-                if (
-                    isUserRegistered(email = enterUserOrEmailText.toString())
-                ){
-                    navController.navigate(route = Screen.Home.route)
-                }
-                else{
-                    navController.navigate(route = Screen.PinCode.route)
-                }
+                navController.navigate(route = Screen.EmailCodeScreen.route)
+                //userEmail(email = enterUserOrEmailText.toString())
             },
             // true
             enabled = isEmailValid,

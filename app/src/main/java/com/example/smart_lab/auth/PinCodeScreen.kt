@@ -118,7 +118,7 @@ fun PinCodeScreen(
 
         if (pin.size == 4) {
             if (pin.joinToString("") == "1234") {
-
+                navController.navigate(route = Screen.Home.route)
             } else {
                 Toast.makeText(
                     LocalContext.current, "Не успешно", Toast.LENGTH_SHORT
