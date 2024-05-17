@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavController
+import com.example.smart_lab.backend.SharedLib
 import com.example.smart_lab.navigation.Screen
 import java.util.prefs.Preferences
 
@@ -51,6 +52,11 @@ fun PinCodeScreen(
     val pin = remember {
         mutableStateListOf<Int>(
         )
+    }
+
+    val context = LocalContext.current
+    val sharedLib = remember {
+        SharedLib(context)
     }
 
     Column(
@@ -118,7 +124,11 @@ fun PinCodeScreen(
 
         if (pin.size == 4) {
             if (pin.joinToString("") == "1234") {
-                navController.navigate(route = Screen.Home.route)
+                sharedLib.writeToSharedPreferences(
+                    key = "pin_code",
+                    value = pin.toString()
+                )
+                navController.navigate(route = Screen.MapUser.route)
             } else {
                 Toast.makeText(
                     LocalContext.current, "Не успешно", Toast.LENGTH_SHORT

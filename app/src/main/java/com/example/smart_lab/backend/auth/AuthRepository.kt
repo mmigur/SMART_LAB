@@ -1,25 +1,7 @@
-package com.example.smart_lab.backend
+package com.example.smart_lab.backend.auth
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
-
-// Интерфейс для Retrofit
-interface AuthApi {
-    @POST("auth/check-user")
-    suspend fun checkUser(@Body user: User): AuthResponse
-}
-
-// Класс для запроса
-data class User(val email: String)
-
-// Класс для ответа
-data class AuthResponse(val errorMessage: String, val isRegistered: Boolean)
 
 // Класс для выполнения запроса
 class AuthRepository(private val authApi: AuthApi) {

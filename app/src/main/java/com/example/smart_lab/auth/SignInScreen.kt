@@ -36,9 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smart_lab.R
 import com.example.smart_lab.backend.SharedLib
-import com.example.smart_lab.backend.createAuthRepository
+import com.example.smart_lab.backend.auth.createAuthRepository
 import com.example.smart_lab.backend.userEmail
 import com.example.smart_lab.navigation.Screen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,9 +53,6 @@ fun SignInScreen(navController: NavController){
     var enterUserOrEmailText by remember { mutableStateOf(TextFieldValue("")) }
     var isEmailValid by remember { mutableStateOf(false) }
 
-    val authRepository = createAuthRepository()
-    val isRegistered = remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -122,10 +121,18 @@ fun SignInScreen(navController: NavController){
                 .width(335.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF1A6FEE)),
             onClick = {
-                navController.navigate(route = Screen.EmailCodeScreen.route)
-                //userEmail(email = enterUserOrEmailText.toString())
+                sharedLib.writeToSharedPreferences(
+                    key = "email_sign_in",
+                    value = enterUserOrEmailText.toString()
+                )
+                GlobalScope.launch(Dispatchers.Main) {
+                    if (userEmail(email = enterUserOrEmailText.toString())) {
+                        navController.navigate(route = Screen.Home.route)
+                    } else {
+                        navController.navigate(route = Screen.EmailCodeScreen.route)
+                    }
+                }
             },
-            // true
             enabled = isEmailValid,
             shape = RoundedCornerShape(10.dp),
         ) {
